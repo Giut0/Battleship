@@ -27,13 +27,12 @@ void showTable(char table[MAX_ROW][MAX_COLUMN]);
 void spawnShips(char table[MAX_ROW][MAX_COLUMN]); //Spawn ships in random cells
 unsigned short isCorrectInput(unsigned short column, unsigned short row, unsigned short inputNumber); //Checking for correctness of input
 
-//TODO: Funzione che mostra la griglia di gioco con '*' per le casella dove è stato fatto un buco nell'acqua, 'X' per le navi colpite
-
 int main(void) {
 
     srand(time(NULL));
 
     char battleshipTable[MAX_ROW][MAX_COLUMN]; //Char matrix to optimize memory space
+    char battleshipGameTable[MAX_ROW][MAX_COLUMN]; //Char matrix showed in game
     char currentColumn;
     unsigned short currentRow = 0, NumberCurrentColumn = 0, score = 0, inputNumber = 0, flagCorrectInput = 0;
 
@@ -50,6 +49,7 @@ int main(void) {
     printf("Per aiutarti ti mostro la tabella vuota: \n \n");
 
     initializeTable(battleshipTable);
+    initializeTable(battleshipGameTable); 
 
     showTable(battleshipTable);
 
@@ -74,11 +74,14 @@ int main(void) {
 
         if(battleshipTable[currentRow - 1][NumberCurrentColumn] == SHIP_CODE){
 
-            printf("🥳 Nave colpita \n");
+            printf("🥳 Nave colpita \n\n");
             score++;
 
             //Replaces the ship carattetre 'X' with another 'C' so as not to cover the same ship
             battleshipTable[currentRow - 1][NumberCurrentColumn] = 'C';
+            battleshipGameTable[currentRow - 1][NumberCurrentColumn] = 'C';
+
+            showTable(battleshipGameTable);
 
             if(score == MAX_SHIPS){  //End game in case all ships are sunk
 
@@ -87,12 +90,15 @@ int main(void) {
 
         }else if(battleshipTable[currentRow - 1][NumberCurrentColumn] == EMPTY_CELL_CODE){
 
-            printf("🥲  Nave mancata, ritenta! \n");
+            printf("🥲  Nave mancata, ritenta! \n\n");
+            battleshipGameTable[currentRow - 1][NumberCurrentColumn] = '*';
+            showTable(battleshipGameTable);
 
         }else if(battleshipTable[currentRow - 1][NumberCurrentColumn] == SINKED_SHIP_CODE){
 
-            printf("😑 Nave già affondata, inserire un input diverso! \n");
+            printf("😑 Nave già affondata, inserire un input diverso! \n\n");
             i--;
+            showTable(battleshipGameTable);
         }
 
     }

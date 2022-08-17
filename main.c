@@ -23,7 +23,7 @@
 #define EMPTY_CELL_CODE 48 //ASCII code of '0' with which empty cell are marked
 
 void initializeTable(char table[MAX_ROW][MAX_COLUMN]); //Initialize table with '0' at all cells
-void outputTable(char table[MAX_ROW][MAX_COLUMN]);
+void showTable(char table[MAX_ROW][MAX_COLUMN]);
 void spawnShips(char table[MAX_ROW][MAX_COLUMN]); //Spawn ships in random cells
 unsigned short isCorrectInput(unsigned short column, unsigned short row, unsigned short inputNumber); //Checking for correctness of input
 
@@ -35,10 +35,10 @@ int main(void) {
 
     char battleshipTable[MAX_ROW][MAX_COLUMN]; //Char matrix to optimize memory space
     char currentColumn;
-    unsigned short currentRow = 0, NumberCurrentColumn = 0, score = 0, inputNumber = 0;
+    unsigned short currentRow = 0, NumberCurrentColumn = 0, score = 0, inputNumber = 0, flagCorrectInput = 0;
 
     printf("\n************************* Battaglia navale *************************\n\n");
-    printf("Benvenut* gamer, ho posizionato casualmente delle navi in una tabella, vediamo se riesci a trovarle tutte 😇 \n \n");
+    printf("Benvenut* gamer, ho posizionato casualmente delle navi in una tabella, vediamo se riesci a trovarle tutte 😇 \n\n");
     printf(" 📜 Regole principali: \n"
            " 1) Inserisci una coppia di valori es. A1 oppure b4, dove alle lettere corrispondono le colonne mentre ai numeri corrispondono le righe; \n"
            " 2) Le colonne vanno dalla A alla F (si possono inserire anche lettere minuscole) e le righe vanno da 1 a 6; \n"
@@ -51,20 +51,26 @@ int main(void) {
 
     initializeTable(battleshipTable);
 
-    outputTable(battleshipTable);
+    showTable(battleshipTable);
 
     spawnShips(battleshipTable);
 
     for(int i = 0; i < MAX_ATTEMPTS; i++){
 
         do{
+            flagCorrectInput = 0;
             printf("\nInserire la %da mossa (nel formato colonna riga es. A5 oppure b4): ", (i + 1));
             inputNumber = scanf("%c%hu", &currentColumn, &currentRow);
 
             //Subtracts the ASCII code of the entered letter from the ASCII code of the letter A to make the input corresponsive to numbers >= 0
             NumberCurrentColumn = toupper(currentColumn) - ASCII_CODE_A;
 
-        }while(isCorrectInput(NumberCurrentColumn, currentRow, inputNumber)); 
+            if(isCorrectInput(NumberCurrentColumn, currentRow, inputNumber)){
+                printf("\n⛔ Input non corretto, si prega di inserire valori che per le righe vanno da 1 a 6 e per le colonne le lettere dalla A alla F ⛔\n");
+                flagCorrectInput = 1;
+            }
+
+        }while(flagCorrectInput == 1); 
 
         if(battleshipTable[currentRow - 1][NumberCurrentColumn] == SHIP_CODE){
 
@@ -102,12 +108,12 @@ int main(void) {
 
     printf("Per onor del vero ecco a te la tabella con le navi \n\n");
 
-    outputTable(battleshipTable);
+    showTable(battleshipTable);
 
     printf("\nLegenda: \n"
            "- Con X vengono indicate le navi che non hai affondato; \n"
            "- Con C vengono indicate le navi che hai affondato; \n"
-           "- Con 0 vengono indicate le caselle vuote. \n");
+           "- Con 0 vengono indicate le caselle vuote. \n\n");
 
     return 0;
 }
@@ -124,7 +130,7 @@ void initializeTable(char table[MAX_ROW][MAX_COLUMN]){
     }
 }
 
-void outputTable(char table[MAX_ROW][MAX_COLUMN]){
+void showTable(char table[MAX_ROW][MAX_COLUMN]){
 
     puts("   |  A   B   C   D   E   F ");
     puts("---+------------------------");
@@ -162,9 +168,7 @@ unsigned short isCorrectInput(unsigned short column, unsigned short row, unsigne
     while(getchar() != '\n'); //Removes any characters left in the buffer up to the newline
 
     if((column < 0 || column > MAX_COLUMN) || (row < 0 || row > MAX_ROW) || (inputNumber != 2)){
-
         flagCorrectInput = 1;
-        printf("\n⛔ Input non corretto, si prega di inserire valori che per le righe vanno da 1 a 6 e per le colonne le lettere dalla A alla F ⛔\n");
     }
 
     return flagCorrectInput;

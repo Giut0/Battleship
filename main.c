@@ -1,6 +1,6 @@
 /*
  ============================================================================
- Name        : Battleship.c
+ Name        : Battleship
  Author      : Vito Proscia
  Version     : 1.0
  Description : Simplification of the naval battle game
@@ -17,15 +17,15 @@
 #define MAX_COLUMN 6
 #define MAX_SHIPS 6
 #define MAX_ATTEMPTS 10
-#define SHIP_CODE 88 //ASCII code of the X, with which ships are marked
+#define SHIP_CODE 88 //ASCII code of the 'X', with which ships are marked
 #define ASCII_CODE_A 65
-#define SINKED_SHIP_CODE 67 //ASCII code of C with which sunken ships are marked
-#define CODICE_CASELLA_VUOTA 48 //ASCII code of 0 with which empty boxes are marked
+#define SINKED_SHIP_CODE 67 //ASCII code of 'C' with which sunken ships are marked
+#define EMPTY_CELL_CODE 48 //ASCII code of '0' with which empty cell are marked
 
-void initialize_Table(char table[MAX_ROW][MAX_COLUMN]);
+void initializeTable(char table[MAX_ROW][MAX_COLUMN]); //Initialize table with '0' at all cells
 void outputTable(char table[MAX_ROW][MAX_COLUMN]);
-void spawnsShips(char table[MAX_ROW][MAX_COLUMN]);
-unsigned short isCorrectInput(unsigned short column, unsigned short row, unsigned short inputNumber);
+void spawnShips(char table[MAX_ROW][MAX_COLUMN]); //Spawn ships in random cells
+unsigned short isCorrectInput(unsigned short column, unsigned short row, unsigned short inputNumber); //Checking for correctness of input
 
 //TODO: Funzione che mostra la griglia di gioco con '*' per le casella dove è stato fatto un buco nell'acqua, 'X' per le navi colpite
 
@@ -33,59 +33,59 @@ int main(void) {
 
     srand(time(NULL));
 
-    char battleshipTable[MAX_ROW][MAX_COLUMN]; //Matrice di char per ottimizzare lo spazio in memoria
+    char battleshipTable[MAX_ROW][MAX_COLUMN]; //Char matrix to optimize memory space
     char currentColumn;
-    unsigned short currentRow = 0, NumberCurrentColumn = 0, score = 0, inputNumber = 0, i = 0;
+    unsigned short currentRow = 0, NumberCurrentColumn = 0, score = 0, inputNumber = 0;
 
     printf("\n************************* Battaglia navale *************************\n\n");
-    printf("Benvenut* gamer, ho posizionato casualmente delle navi in una tabella, vediamo se riesci a trovarle tutte (◠‿◠) \n \n");
-    printf("Regole principali: \n"
-           " 1) Inserisci una coppia di valori es. A1 oppure b4, dove alle lettere corrispondono le colonne mentre ai numeri corrispondono le righe; \n "
-           "2) Le colonne vanno dalla A alla F (si possono inserire anche lettere minuscole) e le righe vanno da 1 a 6; \n"
+    printf("Benvenut* gamer, ho posizionato casualmente delle navi in una tabella, vediamo se riesci a trovarle tutte 😇 \n \n");
+    printf(" 📜 Regole principali: \n"
+           " 1) Inserisci una coppia di valori es. A1 oppure b4, dove alle lettere corrispondono le colonne mentre ai numeri corrispondono le righe; \n"
+           " 2) Le colonne vanno dalla A alla F (si possono inserire anche lettere minuscole) e le righe vanno da 1 a 6; \n"
            " 3) Hai a disposizione 10 tentativi per trovare tutte le navi che ho sistemato; \n"
            " 4) Divertiti!! \n \n");
 
-    printf("Ti tengo d'occhio, non barare ಠ_ಠ \n \n");
+    printf("Ti tengo d'occhio, non barare 👀 \n \n");
     printf("************************* Iniziamo ************************* \n\n");
-
     printf("Per aiutarti ti mostro la tabella vuota: \n \n");
 
-    initialize_Table(battleshipTable);
+    initializeTable(battleshipTable);
+
     outputTable(battleshipTable);
 
-    spawnsShips(battleshipTable);
+    spawnShips(battleshipTable);
 
-    for(i = 0; i < MAX_ATTEMPTS; i++){
+    for(int i = 0; i < MAX_ATTEMPTS; i++){
 
         do{
             printf("\nInserire la %da mossa (nel formato colonna riga es. A5 oppure b4): ", (i + 1));
             inputNumber = scanf("%c%hu", &currentColumn, &currentRow);
 
-            //Sottrae al codice ASCII della lettera inserita il codice ASCII della lettera A per far corispondere l'input a numeri >= 0
+            //Subtracts the ASCII code of the entered letter from the ASCII code of the letter A to make the input corresponsive to numbers >= 0
             NumberCurrentColumn = toupper(currentColumn) - ASCII_CODE_A;
 
-        }while(isCorrectInput(NumberCurrentColumn, currentRow, inputNumber)); //Controllo della correttezza dell'input
+        }while(isCorrectInput(NumberCurrentColumn, currentRow, inputNumber)); 
 
         if(battleshipTable[currentRow - 1][NumberCurrentColumn] == SHIP_CODE){
 
-            printf("Nave colpita \n");
+            printf("🥳 Nave colpita \n");
             score++;
 
-            //Sostituisce il carattetre della nave 'X' con un altro 'C' per non coplire la stessa nave
+            //Replaces the ship carattetre 'X' with another 'C' so as not to cover the same ship
             battleshipTable[currentRow - 1][NumberCurrentColumn] = 'C';
 
-            if(score == MAX_SHIPS){  //Fine gioco in caso vengano affondate tutte le navi
+            if(score == MAX_SHIPS){  //End game in case all ships are sunk
 
                 i = MAX_ATTEMPTS;
             }
 
-        }else if(battleshipTable[currentRow - 1][NumberCurrentColumn] == CODICE_CASELLA_VUOTA){
+        }else if(battleshipTable[currentRow - 1][NumberCurrentColumn] == EMPTY_CELL_CODE){
 
-            printf("Nave mancata, ritenta! \n");
+            printf("🥲  Nave mancata, ritenta! \n");
 
         }else if(battleshipTable[currentRow - 1][NumberCurrentColumn] == SINKED_SHIP_CODE){
 
-            printf("Nave già affondata, inserire un input diverso! \n");
+            printf("😑 Nave già affondata, inserire un input diverso! \n");
             i--;
         }
 
@@ -95,7 +95,7 @@ int main(void) {
 
     if(score == MAX_ATTEMPTS){
 
-        printf("CONGRATULAZIONI HAI OTTENUTO IL MASSIMO DEL PUNTEGGIO: %d", score);
+        printf("🎉 CONGRATULAZIONI HAI OTTENUTO IL MASSIMO DEL PUNTEGGIO: %d 🎉", score);
     }
 
     printf("Punteggio: %d \n\n", score);
@@ -112,13 +112,11 @@ int main(void) {
     return 0;
 }
 
-void initialize_Table(char table[MAX_ROW][MAX_COLUMN]){
+void initializeTable(char table[MAX_ROW][MAX_COLUMN]){
 
-    unsigned short i, j;
+    for(int i = 0; i < MAX_ROW; i++){
 
-    for(i = 0; i < MAX_ROW; i++){
-
-        for(j = 0; j < MAX_COLUMN; j++){
+        for(int j = 0; j < MAX_COLUMN; j++){
 
             table[i][j] = '0';
         }
@@ -128,16 +126,14 @@ void initialize_Table(char table[MAX_ROW][MAX_COLUMN]){
 
 void outputTable(char table[MAX_ROW][MAX_COLUMN]){
 
-    unsigned short i, j;
-
     puts("   |  A   B   C   D   E   F ");
     puts("---+------------------------");
 
-    for(i = 0; i < MAX_ROW; i++){
+    for(int i = 0; i < MAX_ROW; i++){
 
         printf(" %hu |", (i + 1));
 
-        for(j = 0; j < MAX_COLUMN; j++){
+        for(int j = 0; j < MAX_COLUMN; j++){
 
             printf("  %c ", table[i][j]);
         }
@@ -146,30 +142,30 @@ void outputTable(char table[MAX_ROW][MAX_COLUMN]){
     }
 }
 
-void spawnsShips(char table[MAX_ROW][MAX_COLUMN]){
+void spawnShips(char table[MAX_ROW][MAX_COLUMN]){
 
-    unsigned short randRighe, randColonne, i;
+    unsigned short randRow, randColumn;
 
-    for(i = 0; i <= MAX_SHIPS; i++){
+    for(int i = 0; i <= MAX_SHIPS; i++){
 
-        randRighe = rand() % MAX_ROW;
-        randColonne = rand() % MAX_COLUMN;
+        randRow = rand() % MAX_ROW;
+        randColumn = rand() % MAX_COLUMN;
 
-        table[randRighe][randColonne] = 'X';
+        table[randRow][randColumn] = 'X';
     }
 }
 
 unsigned short isCorrectInput(unsigned short column, unsigned short row, unsigned short inputNumber){
 
-    unsigned short flagInputCorretto = 0;
+    unsigned short flagCorrectInput = 0;
 
-    while(getchar() != '\n'); //Rimuove eventuali caratteri rimasti nel buffer fino al newline
+    while(getchar() != '\n'); //Removes any characters left in the buffer up to the newline
 
     if((column < 0 || column > MAX_COLUMN) || (row < 0 || row > MAX_ROW) || (inputNumber != 2)){
 
-        flagInputCorretto = 1;
-        printf("!!! Input non corretto, si prega di inserire valori che per le righe vanno da 1 a 6 e per le colonne le lettere dalla A alla F !!!\n");
+        flagCorrectInput = 1;
+        printf("\n⛔ Input non corretto, si prega di inserire valori che per le righe vanno da 1 a 6 e per le colonne le lettere dalla A alla F ⛔\n");
     }
 
-    return flagInputCorretto;
+    return flagCorrectInput;
 }

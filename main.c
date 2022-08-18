@@ -48,7 +48,7 @@ int main(void) {
            " 2) Le colonne vanno dalla A alla F (si possono inserire anche lettere minuscole) e le righe vanno da 1 a 6; \n"
            " 3) Hai a disposizione 10 tentativi per trovare tutte le navi che ho sistemato; \n"
            " 4) Divertiti!! \n\n");
-
+    printf("Ps. Per uscire dal gioco digitare !quit oppure !exit \n\n");
     printf("Ti tengo d'occhio, non barare 👀 \n\n");
     printf("************************* Iniziamo ************************* \n\n");
     printf("Per aiutarti ti mostro la tabella vuota: \n\n");

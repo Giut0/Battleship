@@ -2,7 +2,7 @@
  ============================================================================
  Name        : Battleship
  Author      : Vito Proscia
- Version     : 1.0
+ Version     : 2.0
  Description : Simplification of the naval battle game
  ============================================================================
  */
@@ -19,6 +19,7 @@
 #define MAX_ATTEMPTS 10
 #define SHIP_CODE 88 //ASCII code of the 'X', with which ships are marked
 #define ASCII_CODE_A 65
+#define ASCII_CODE_EXIT 33 //ASCII code of '!' which represent the exit command
 #define FAIL_CODE 42 //ASCII code of '*' which represent cell without a ship
 #define SINKED_SHIP_CODE 67 //ASCII code of 'C' which represent sunken ships
 #define EMPTY_CELL_CODE 48 //ASCII code of '0' which represent empty cell
@@ -63,6 +64,15 @@ int main(void) {
             flagCorrectInput = 0;
             printf("\nInserire la %da mossa (nel formato colonna riga es. A5 oppure b4): ", (i + 1));
             inputNumber = scanf("%c%hu", &currentColumn, &currentRow);
+
+            if(inputNumber == 1){
+                
+                if(currentColumn == ASCII_CODE_EXIT){
+
+                    printf("\nChiusura del gioco, a presto 👋\n\n");
+                    exit(0);
+                }
+            }
 
             //Subtracts the ASCII code of the entered letter from the ASCII code of the letter A to make the input corresponsive to numbers >= 0
             NumberCurrentColumn = toupper(currentColumn) - ASCII_CODE_A;

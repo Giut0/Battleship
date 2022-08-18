@@ -17,7 +17,7 @@ La griglia di gioco 6x6 è del tipo:
 
 Per effettuare un tenativo è necessario dare in input all'applicazione una coppia di coordinate, es. `A5` oppure `b4`, specificando prima la colonna e subuto dopo la riga da bersagliare.
 
-### Download 👉🏻 [here]()
+### Download 👉🏻 [here](https://github.com/Giuto01/Battleship/releases/download/v2.0-stable/battleship)
 
 
 ## Istruzioni di compilazione

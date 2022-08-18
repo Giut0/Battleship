@@ -19,8 +19,12 @@
 #define MAX_ATTEMPTS 10
 #define SHIP_CODE 88 //ASCII code of the 'X', with which ships are marked
 #define ASCII_CODE_A 65
-#define SINKED_SHIP_CODE 67 //ASCII code of 'C' with which sunken ships are marked
-#define EMPTY_CELL_CODE 48 //ASCII code of '0' with which empty cell are marked
+#define FAIL_CODE 42 //ASCII code of '*' which represent cell without a ship
+#define SINKED_SHIP_CODE 67 //ASCII code of 'C' which represent sunken ships
+#define EMPTY_CELL_CODE 48 //ASCII code of '0' which represent empty cell
+#define BRED "\e[1;31m" //ANSI color bright red
+#define BGRN "\e[1;32m" //ANSI color bright green
+#define COLOR_RESET "\e[0m" //ANSI color reset
 
 void initializeTable(char table[MAX_ROW][MAX_COLUMN]); //Initialize table with '0' at all cells
 void showTable(char table[MAX_ROW][MAX_COLUMN]);
@@ -42,17 +46,15 @@ int main(void) {
            " 1) Inserisci una coppia di valori es. A1 oppure b4, dove alle lettere corrispondono le colonne mentre ai numeri corrispondono le righe; \n"
            " 2) Le colonne vanno dalla A alla F (si possono inserire anche lettere minuscole) e le righe vanno da 1 a 6; \n"
            " 3) Hai a disposizione 10 tentativi per trovare tutte le navi che ho sistemato; \n"
-           " 4) Divertiti!! \n \n");
+           " 4) Divertiti!! \n\n");
 
-    printf("Ti tengo d'occhio, non barare 👀 \n \n");
+    printf("Ti tengo d'occhio, non barare 👀 \n\n");
     printf("************************* Iniziamo ************************* \n\n");
-    printf("Per aiutarti ti mostro la tabella vuota: \n \n");
+    printf("Per aiutarti ti mostro la tabella vuota: \n\n");
 
     initializeTable(battleshipTable);
     initializeTable(battleshipGameTable); 
-
     showTable(battleshipTable);
-
     spawnShips(battleshipTable);
 
     for(int i = 0; i < MAX_ATTEMPTS; i++){
@@ -147,7 +149,24 @@ void showTable(char table[MAX_ROW][MAX_COLUMN]){
 
         for(int j = 0; j < MAX_COLUMN; j++){
 
-            printf("  %c ", table[i][j]);
+            if(table[i][j] == SINKED_SHIP_CODE){
+
+                printf(BGRN);
+                printf("  C ");
+                printf(COLOR_RESET);
+            }else if(table[i][j] ==  SHIP_CODE){
+
+                printf(BRED);
+                printf("  X ");
+                printf(COLOR_RESET);
+            }else if(table[i][j] ==  FAIL_CODE){
+
+                printf("  * ");
+            }else{
+
+                printf("  0 ");
+            }
+            
         }
 
         printf("\n");

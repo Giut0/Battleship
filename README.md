@@ -16,9 +16,6 @@ CLI application inspired by `battleship game`, the main purpose in hit `6 ships`
 
 For do an attempt is necessary input a couple of  coordinates, ex. `A5` or `b4`, the first letter represent the column and the the second number represent the row to target. 
 
-### Download 👉🏻 [here](https://github.com/Giuto01/Battleship/releases/download/v2.0-stable/battleship)
-
-
 ## Compilation instruction 
 
 ```bash
